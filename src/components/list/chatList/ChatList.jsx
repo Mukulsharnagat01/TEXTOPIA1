@@ -1,3 +1,4 @@
+// ChatList.jsx
 import { useEffect, useState } from "react";
 import "./chatList.css";
 import AddUser from "./addUser/addUser";
@@ -5,6 +6,7 @@ import { useUserStore } from "../../../lib/userStore";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import { useChatStore } from "../../../lib/chatStore";
+import { toast } from "react-toastify";
 
 const ChatList = () => {
   const [chats, setChats] = useState([]);
@@ -15,32 +17,72 @@ const ChatList = () => {
   const { chatId, changeChat } = useChatStore();
 
   useEffect(() => {
+    if (!currentUser?.id) {
+      setChats([]);
+      toast.info("Please log in to view chats.");
+      return;
+    }
+
     const unSub = onSnapshot(
       doc(db, "userchats", currentUser.id),
       async (res) => {
-        const items = res.data().chats;
+        if (!res.exists()) {
+          setChats([]);
+          toast.info("No chats found. Add a user to start chatting!");
+          return;
+        }
+
+        const items = res.data().chats || [];
 
         const promises = items.map(async (item) => {
-          const userDocRef = doc(db, "users", item.receiverId);
-          const userDocSnap = await getDoc(userDocRef);
+          try {
+            const userDocRef = doc(db, "users", item.receiverId);
+            const userDocSnap = await getDoc(userDocRef);
 
-          const user = userDocSnap.data();
+            if (!userDocSnap.exists()) {
+              console.warn(`User with ID ${item.receiverId} not found`);
+              return null;
+            }
 
-          return { ...item, user };
+            const user = userDocSnap.data();
+            return { ...item, user };
+          } catch (err) {
+            console.error(`Error fetching user ${item.receiverId}:`, err);
+            return null;
+          }
         });
 
-        const chatData = await Promise.all(promises);
-
-        setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+        const chatData = (await Promise.all(promises)).filter(Boolean);
+        setChats(chatData.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)));
+      },
+      (err) => {
+        console.error("Chat list error:", err);
+        if (err.code === "unavailable") {
+          toast.error("You are offline. Please check your connection.");
+        } else if (err.code === "permission-denied") {
+          toast.error("Permission denied. Check Firestore rules or authentication.");
+        } else {
+          toast.error("Failed to load chats: " + err.message);
+        }
       }
     );
 
     return () => {
       unSub();
     };
-  }, [currentUser.id]);
+  }, [currentUser?.id]);
 
   const handleSelect = async (chat) => {
+    if (!chat?.user) {
+      toast.error("Invalid user data.");
+      return;
+    }
+
+    if (chat.user.blocked.includes(currentUser.id)) {
+      toast.warn("You are blocked by this user and cannot open this chat.");
+      return;
+    }
+
     const userChats = chats.map((item) => {
       const { user, ...rest } = item;
       return rest;
@@ -49,6 +91,11 @@ const ChatList = () => {
     const chatIndex = userChats.findIndex(
       (item) => item.chatId === chat.chatId
     );
+
+    if (chatIndex === -1) {
+      toast.error("Chat not found.");
+      return;
+    }
 
     userChats[chatIndex].isSeen = true;
 
@@ -60,12 +107,13 @@ const ChatList = () => {
       });
       changeChat(chat.chatId, chat.user);
     } catch (err) {
-      console.log(err);
+      console.error("Select chat error:", err);
+      toast.error("Failed to open chat: " + err.message);
     }
   };
 
   const filteredChats = chats.filter((c) =>
-    c.user.username.toLowerCase().includes(input.toLowerCase())
+    c.user?.username?.toLowerCase().includes(input.toLowerCase())
   );
 
   return (
@@ -76,6 +124,7 @@ const ChatList = () => {
           <input
             type="text"
             placeholder="Search"
+            value={input}
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
@@ -86,6 +135,7 @@ const ChatList = () => {
           onClick={() => setAddMode((prev) => !prev)}
         />
       </div>
+      {filteredChats.length === 0 && <p>No chats found.</p>}
       {filteredChats.map((chat) => (
         <div
           className="item"
@@ -106,14 +156,13 @@ const ChatList = () => {
           <div className="texts">
             <span>
               {chat.user.blocked.includes(currentUser.id)
-                ? "User"
-                : chat.user.username}
+                ? "Blocked User"
+                : chat.user.username || "Unknown User"}
             </span>
-            <p>{chat.lastMessage}</p>
+            <p>{chat.lastMessage || "No messages yet"}</p>
           </div>
         </div>
       ))}
-
       {addMode && <AddUser />}
     </div>
   );

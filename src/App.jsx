@@ -1,3 +1,4 @@
+// App.jsx
 import { useEffect } from "react";
 import Chat from "./components/chat/Chat";
 import Detail from "./components/detail/Detail";
@@ -8,7 +9,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase";
 import { useUserStore } from "./lib/userStore";
 import { useChatStore } from "./lib/chatStore";
-// import { getDatabase, ref, set } from "firebase/database";
+import { toast } from "react-toastify";
 
 const App = () => {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
@@ -16,7 +17,15 @@ const App = () => {
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
-      fetchUserInfo(user?.uid);
+      if (user) {
+        fetchUserInfo(user.uid);
+      } else {
+        fetchUserInfo(null);
+        toast.info("Please sign in to continue.");
+      }
+    }, (err) => {
+      console.error("Auth state error:", err);
+      toast.error("Authentication error: " + err.message);
     });
 
     return () => {

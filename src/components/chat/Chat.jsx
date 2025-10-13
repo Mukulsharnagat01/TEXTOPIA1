@@ -1,3 +1,4 @@
+// Chat.jsx
 import { useEffect, useRef, useState } from "react";
 import "./chat.css";
 import EmojiPicker from "emoji-picker-react";
@@ -11,31 +12,39 @@ import {
 import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
-// import upload from "../../lib/upload";
+import { toast } from "react-toastify";
 import { format } from "timeago.js";
 
 const Chat = () => {
   const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
-  const [img, setImg] = useState({
-    file: null,
-    url: "",
-  });
 
   const { currentUser } = useUserStore();
-  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
-    useChatStore();
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChatStore();
 
   const endRef = useRef(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chat.messages]);
+  }, [chat?.messages]);
 
   useEffect(() => {
+    if (!chatId) {
+      setChat(null);
+      return;
+    }
+
     const unSub = onSnapshot(doc(db, "chats", chatId), (res) => {
-      setChat(res.data());
+      if (res.exists()) {
+        setChat(res.data());
+      } else {
+        setChat(null);
+        toast.error("Chat not found");
+      }
+    }, (err) => {
+      console.error("Chat subscription error:", err);
+      toast.error("Failed to load chat");
     });
 
     return () => {
@@ -48,24 +57,14 @@ const Chat = () => {
     setOpen(false);
   };
 
-  const handleImg = (e) => {
-    if (e.target.files[0]) {
-      setImg({
-        file: e.target.files[0],
-        url: URL.createObjectURL(e.target.files[0]),
-      });
-    }
-  };
-
   const handleSend = async () => {
-    if (!text) return;
+    if (!text) return; // Prevent empty messages
     try {
       await updateDoc(doc(db, "chats", chatId), {
         messages: arrayUnion({
           senderId: currentUser.id,
           text,
           createdAt: new Date(),
-          // img remove ho gaya
         }),
       });
 
@@ -77,7 +76,6 @@ const Chat = () => {
 
         if (userChatsSnapshot.exists()) {
           const userChatsData = userChatsSnapshot.data();
-
           const chatIndex = userChatsData.chats.findIndex(
             (c) => c.chatId === chatId
           );
@@ -95,9 +93,9 @@ const Chat = () => {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error("Send error:", err);
+      toast.error("Failed to send message");
     } finally {
-      setImg({ file: null, url: "" });
       setText("");
     }
   };
@@ -108,8 +106,8 @@ const Chat = () => {
         <div className="user">
           <img src={user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
-            <span>{user?.username}</span>
-            <p>Lorem ipsum dolor, sit amet.</p>
+            <span>{user?.username || "Unknown User"}</span>
+            <p>{isCurrentUserBlocked ? "You are blocked" : "Lorem ipsum dolor, sit amet."}</p>
           </div>
         </div>
         <div className="icons">
@@ -124,35 +122,20 @@ const Chat = () => {
             className={
               message.senderId === currentUser?.id ? "message own" : "message"
             }
-            key={message?.createAt}
+            key={message?.createdAt}
           >
             <div className="texts">
-              {message.img && <img src={message.img} alt="" />}
               <p>{message.text}</p>
               <span>{format(message.createdAt.toDate())}</span>
             </div>
           </div>
         ))}
-        {img.url && (
-          <div className="message own">
-            <div className="texts">
-              <img src={img.url} alt="" />
-            </div>
-          </div>
-        )}
+        {!chat && <p>No messages yet</p>}
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
         <div className="icons">
-          <label htmlFor="file">
-            <img src="./img.png" alt="" />
-          </label>
-          <input
-            type="file"
-            id="file"
-            style={{ display: "none" }}
-            onChange={handleImg}
-          />
+          {/* Remove image upload icon */}
           <img src="./camera.png" alt="" />
           <img src="./mic.png" alt="" />
         </div>
