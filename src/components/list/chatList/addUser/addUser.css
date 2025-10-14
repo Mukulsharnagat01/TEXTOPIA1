@@ -1,4 +1,4 @@
-.addUser {
+/* .addUser {
     width: max-content;
     height: max-content;
     padding: 30px;
@@ -60,4 +60,78 @@
             cursor: pointer;
         }
     }
+} */
+
+/*
+ * NOTE: The addUser.jsx file uses Tailwind CSS classes for styling. 
+ * This external CSS file is provided by translating the SCSS-like syntax 
+ * found in the original file into standard CSS.
+ */
+
+.addUser {
+    width: max-content;
+    height: max-content;
+    padding: 30px;
+    background-color: rgba(17, 25, 40, 0.781);
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.addUser form {
+    display: flex;
+    gap: 20px;
+}
+
+.addUser form input {
+    padding: 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    /* Added based on the JSX flex-1 class */
+}
+
+.addUser form button {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.addUser .user {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.addUser .user .detail {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.addUser .user .detail img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.addUser .user button {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    /* Added to match the green styling in JSX */
+    background-color: #4CAF50;
 }
