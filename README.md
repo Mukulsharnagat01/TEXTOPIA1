@@ -58,7 +58,7 @@ src/
 └── index.css                       # Global styles
 ```
 
-## Getting Started
+<!-- ## Getting Started
 
 ### Prerequisites
 
@@ -92,7 +92,7 @@ The application will be available at `http://localhost:3000`
 3. **Send Messages**: Type and send messages in the chat window
 4. **View Details**: Click on user info to see chat participant details
 5. **Add Users**: Use the "Add User" feature to start new conversations
-6. **User Profile**: Access your profile information from the user info section
+6. **User Profile**: Access your profile information from the user info section -->
 
 <!-- ## Component Overview
 
@@ -156,14 +156,14 @@ The application will be available at `http://localhost:3000`
 6. **Add Error Handling**: Implement error boundaries and validation
 7. **Optimize Performance**: Add code splitting and lazy loading -->
 
-## Available Scripts
+<!-- ## Available Scripts
 
 ```bash
 npm start           # Run development server
 npm build           # Build for production
 npm test            # Run tests (if configured)
 npm eject           # Eject from create-react-app (if used)
-```
+``` -->
 
 ## Contributing
 
