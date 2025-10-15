@@ -1,8 +1,8 @@
 # TEXTOPIA - Chat Application
 
-A modern, real-time chat application built with React. TEXTOPIA brings users together with an intuitive interface and seamless messaging capabilities. This version uses mock data instead of Firebase for easier development and testing.
+A modern, real-time chat application built with React + Vite and Firebase. TEXTOPIA brings users together with an intuitive interface and seamless messaging capabilities powered by Firebase Authentication and Database. Built for speed with Vite's lightning-fast build tooling.
 
-## Features
+## 🚀Features
 
 - **Real-Time Messaging**: Send and receive messages with instant updates
 - **User Profiles**: View and manage user information
@@ -13,15 +13,19 @@ A modern, real-time chat application built with React. TEXTOPIA brings users tog
 - **Mock Data Integration**: Pre-configured with sample data for development
 <!-- - **Status Indicators**: See user online/offline status -->
 
-<!-- ## Tech Stack
+💻 Tech Stack
 
-- **Frontend Framework**: React (JSX)
-- **Styling**: CSS3
-- **State Management**: Zustand (userStore.js, chatStore.js)
-- **Architecture**: Component-based modular structure
-- **Data**: Mock data (no external database) -->
+Framework: React (with JSX)
+Build Tool: Vite
+Styling: CSS & Tailwind CSS
+Backend & Database: Firebase Database
+Authentication: Firebase Authentication
+State Management: Zustand
+Hosting: Netlify
+Package Manager: npm 
+Architecture: Component-based modular structure
 
-## Project Structure
+## 📁Project Structure
 
 ```
 src/
@@ -165,7 +169,7 @@ npm test            # Run tests (if configured)
 npm eject           # Eject from create-react-app (if used)
 ``` -->
 
-## Contributing
+## 🤝Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -197,9 +201,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For support, open an issue on GitHub or contact the maintainers. -->
 
-## Acknowledgments
+## 📱Acknowledgments
 
-- Built with React and modern web technologies
+- Built with React and Vite for speed and efficiency
+- Real-time capabilities powered by Firebase
 - Inspired by popular chat applications
 - Created by Mukul Sharnagat
 
