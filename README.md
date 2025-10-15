@@ -2,6 +2,8 @@
 
 A modern, real-time chat application built with React + Vite and Firebase. TEXTOPIA brings users together with an intuitive interface and seamless messaging capabilities powered by Firebase Authentication and Database. Built for speed with Vite's lightning-fast build tooling.
 
+🌐 Live Demo: https://textopia-chat.netlify.app/
+
 ## 🚀Features
 
 - **Real-Time Messaging**: Send and receive messages with instant updates
