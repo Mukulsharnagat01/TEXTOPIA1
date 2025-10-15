@@ -17,7 +17,7 @@ A modern, real-time chat application built with React + Vite and Firebase. TEXTO
 <!-- - **Responsive Design**: Works seamlessly on desktop and mobile devices -->
 <!-- - **Status Indicators**: See user online/offline status -->
 
-💻 Tech Stack
+## 💻 Tech Stack
 
 Framework: React (with JSX)                                                                                                                                                                                         
 Build Tool: Vite                                                                                                                                                                                                    
