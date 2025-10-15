@@ -9,8 +9,8 @@ A modern, real-time chat application built with React + Vite and Firebase. TEXTO
 - **Chat Lists**: Organized view of all your conversations
 - **Add Users**: Search and add new users to your contacts
 - **User Details**: View detailed information about chat participants
-<!-- - **Responsive Design**: Works seamlessly on desktop and mobile devices -->
 - **Mock Data Integration**: Pre-configured with sample data for development
+- <!-- - **Responsive Design**: Works seamlessly on desktop and mobile devices -->
 <!-- - **Status Indicators**: See user online/offline status -->
 
 💻 Tech Stack
