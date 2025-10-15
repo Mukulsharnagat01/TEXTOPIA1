@@ -15,15 +15,15 @@ A modern, real-time chat application built with React + Vite and Firebase. TEXTO
 
 💻 Tech Stack
 
-Framework: React (with JSX)
-Build Tool: Vite
-Styling: CSS & Tailwind CSS
-Backend & Database: Firebase Database
-Authentication: Firebase Authentication
-State Management: Zustand
-Hosting: Netlify
-Package Manager: npm 
-Architecture: Component-based modular structure
+Framework: React (with JSX)                                                                                                                                                                                         
+Build Tool: Vite                                                                                                                                                                                                    
+Styling: CSS & Tailwind CSS                                                                                                                                                                                         
+Backend & Database: Firebase Database                                                                                                                                                                               
+Authentication: Firebase Authentication                                                                                                                                                                             
+State Management: Zustand                                                                                                                                                                                           
+Hosting: Netlify                                                                                                                                                                                                    
+Package Manager: npm                                                                                                                                                                                                
+Architecture: Component-based modular structure                                                                                                                                                                     
 
 ## 📁Project Structure
 
