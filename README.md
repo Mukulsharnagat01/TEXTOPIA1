@@ -4,6 +4,7 @@ A modern, real-time chat application built with React + Vite and Firebase. TEXTO
 
 # 🌐 Live Demo
  https://textopia-chat.netlify.app/
+ 
 
 ## 🚀Features
 
