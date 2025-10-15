@@ -205,7 +205,7 @@ For support, open an issue on GitHub or contact the maintainers. -->
 
 - Built with React and Vite for speed and efficiency
 - Real-time capabilities powered by Firebase
-- Inspired by popular chat applications
+- Inspired by ❤popular chat applications
 - Created by Mukul Sharnagat
 
 ---
